@@ -25,7 +25,7 @@ class Patient(BaseModel):
     email:EmailStr
     linkedin:AnyUrl
     age:int
-    weight:float=Field(gt=0,lt=120)
+    weight:Annotated[float,Field(gt=0,strict=True)]
     married:Annotated[bool,Field(default=None,description='Is the pateint married')]
     allergies:Annotated[Optional[list[str]],Field(default=None,max_length=5)]
     contact:Optional[dict[str,str]]=None

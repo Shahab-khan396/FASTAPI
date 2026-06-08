@@ -24,11 +24,18 @@ class Patient(BaseModel):
         return value
     
     
-    @field_validator('name')
+    @field_validator('name',mode='after')
     @classmethod
     def transform_name(cls,value):
         return value.upper()
     
+    @field_validator('age')
+    @classmethod
+    def validate_age(cls,value):
+        if 0 < value < 100:
+            return value 
+        else:
+            raise ValueError("age should be in between 0 and 100")
     
 def update_patient_data(patient:Patient):
     print(patient.name)
@@ -41,7 +48,7 @@ def update_patient_data(patient:Patient):
     print(patient.contact)
     print('updated')
     
-patient_info={'name':'Shahab','email':"abc@bok.com",'linkedin':"https://linkedin.com",'age':22,'weight':68.5,'married':True,'allergies':['polen','dust'],'contact':{'email':'abc@gmail.com','phone':'123131'}}
+patient_info={'name':'Shahab','email':"abc@bok.com",'linkedin':"https://linkedin.com",'age':'22','weight':68.5,'married':True,'allergies':['polen','dust'],'contact':{'email':'abc@gmail.com','phone':'123131'}}
 
 
 patient1=Patient(**patient_info)

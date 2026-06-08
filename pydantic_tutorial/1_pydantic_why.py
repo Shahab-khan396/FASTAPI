@@ -17,17 +17,17 @@
 # insert_patient_data("shahab",22)
 # # update_patient_data("shahab",21)
 
-from pydantic import BaseModel,EmailStr,AnyUrl
-from typing import List,Dict,Optional
+from pydantic import BaseModel,EmailStr,AnyUrl,Field
+from typing import List,Dict,Optional,Annotated
 
 class Patient(BaseModel):
-    name:str
+    name:Annotated[str,Field(max_length=50,title='name of the patient',description='give the name of the patient in less the 50 char',examples=['shahab','yasir'])]
     email:EmailStr
     linkedin:AnyUrl
     age:int
-    weight:float
-    married:bool
-    allergies:Optional[list[str]]=None
+    weight:float=Field(gt=0,lt=120)
+    married:Annotated[bool,Field(default=None,description='Is the pateint married')]
+    allergies:Annotated[Optional[list[str]],Field(default=None,max_length=5)]
     contact:Optional[dict[str,str]]=None
     
 

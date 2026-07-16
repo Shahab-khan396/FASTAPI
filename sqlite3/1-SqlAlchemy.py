@@ -48,14 +48,17 @@ meta.reflect(engine)
 # 3. Define Table Schema
 # If the table was reflected above, this variable points to the reflected table.
 # If not, it creates a new definition.
-books = Table(
-    'books',
-    meta,
-    Column('book_id', Integer, primary_key=True),
-    Column('book_name', VARCHAR), # Removed accidental space in column name
-    Column('book_price', Numeric),
-    Column('genre', VARCHAR),
-)
+
+if 'books' not in meta.tables:
+    books = Table(
+            'books',
+            meta,
+            Column('book_id', Integer, primary_key=True),
+            Column('book_name', VARCHAR), # Removed accidental space in column name
+            Column('book_price', Numeric),
+            Column('genre', VARCHAR),
+            
+        )
 
 # Create table if it doesn't exist
 meta.create_all(engine)
@@ -72,3 +75,24 @@ statements = [
 with engine.begin() as conn:
     for stmt in statements:
         conn.execute(stmt)   
+        
+        
+from sqlalchemy import text
+from sqlalchemy import create_engine
+text('Your SQL quaries')
+
+# ---------------------------------------------------
+            # Example 1:  Executing basic query
+# ----------------------------------------------------
+
+from sqlalchemy import text
+
+
+engine = create_engine('sqlite:///users.db', echo=True)
+
+with engine.connect() as connection:
+    result = connection.execute(text("select * from books where books.book_price > 230"))
+    for row in result:
+        print("Output:", row)
+          
+    

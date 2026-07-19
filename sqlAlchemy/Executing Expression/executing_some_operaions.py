@@ -27,7 +27,9 @@ for record in result:
         
 
 
-
+# -----------------------------------------------------------
+# selecting by Rows
+# ------------------------------------------------------------
 
 # Build the query using SQLAlchemy 2.x style
 query = select(Books).where(Books.c.genre == 'non-fiction')
@@ -54,4 +56,25 @@ with engine.begin() as conn:
 # Print results
 for record in result:
     print('\n', record)   
-        
+    
+    
+    
+# ---------------------------------------------------------
+# Implementing alias in SQLAlchemy
+# ---------------------------------------------------------
+from sqlalchemy.sql import alias, select
+
+# Access the 'books' table
+Books = meta.tables['books']
+
+b=Books.alias('a')     
+s=select(b).where(b.c.book_id>2)
+
+# Execute the query
+with engine.begin() as conn:
+    result = conn.execute(sql).fetchall()
+
+# Print results
+for record in result:
+    print('\n', record)   
+    
